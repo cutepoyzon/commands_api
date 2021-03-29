@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Serialization;
 
 namespace Commander
 {
@@ -31,6 +32,10 @@ namespace Commander
                 (Configuration.GetConnectionString("CommanderConnection"))
             );
 
+            services.AddControllers().AddNewtonsoftJson(s => {
+                s.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            })
+
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddControllers();
             //services.AddScoped<ICommanderRepo, MockCommanderRepo>();
@@ -45,7 +50,7 @@ namespace Commander
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
+           // app.UseHttpsRedirection();
 
             app.UseRouting();
 

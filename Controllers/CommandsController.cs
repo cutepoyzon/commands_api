@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Commander.Controllers
 {
-    [Route("api/commands")]
     [ApiController]
+    [Route("api/commands")]
     public class CommandsController : ControllerBase
     {
         private readonly ICommanderRepo _repository;
@@ -76,6 +76,14 @@ namespace Commander.Controllers
         }
 
         //PATCH api/commands/{id}
+        [HttpPatch("{id}")]
+        public ActionResult PartialCommandUpdate(int id, JsonPatchDocument<CommandUpdateDTO> patchDoc){
+            var commandModelFromRepo = _repository.GetCommandById(id);
+            if (commandModelFromRepo == null)
+            {
+                return NotFound();
+            }
+        }
 
     }
 }
